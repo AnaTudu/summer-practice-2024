@@ -40,30 +40,38 @@ class MyHomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Filme si seriale'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const Addfilm()),
-                );
-              },
-              child: const Text('Adaugă film nou'),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const ListPage()),
-                );
-              },
-              child: const Text('Vezi lista de filme'),
-            ),
-          ],
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/background.jpg"),
+            fit: BoxFit.cover, // This will fill the background of the screen
+          ),
+        ),
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const Addfilm()),
+                  );
+                },
+                child: const Text('Adaugă film nou'),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const ListPage()),
+                  );
+                },
+                child: const Text('Vezi lista de filme'),
+              ),
+            ],
+          ),
         ),
       ),
     );

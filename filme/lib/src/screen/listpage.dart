@@ -5,8 +5,6 @@ class ListPage extends StatelessWidget {
   const ListPage({super.key});
 
   void _toggleLike(String docId, bool likes) {
-    //print(docId);
-    print(likes);
     FirebaseFirestore.instance
         .collection('movies')
         .doc(docId)
@@ -70,7 +68,9 @@ class ListPage extends StatelessWidget {
                           film['interested'] ? Icons.star : Icons.star_border),
                       onPressed: () =>
                           _toggleInterested(document.id, film['interested']),
-                      color: film['interested'] ? Colors.amber : null,
+                      color: film['interested']
+                          ? const Color.fromARGB(255, 134, 87, 192)
+                          : null,
                     ),
                   ],
                 ),
