@@ -1,6 +1,13 @@
-
 {
-    "hosting": {
-      "source": "./D:/Ana/summer-practice-2024\filme>"
+  "hosting": {
+    "source": ".",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "frameworksBackend": {
+      "region": "europe-west1"
     }
   }
+}
