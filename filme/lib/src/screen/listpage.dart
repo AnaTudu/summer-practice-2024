@@ -35,7 +35,7 @@ class ListPage extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           }
           return ListView(
-            padding: const EdgeInsets.all(8), // Add padding around the list
+            padding: const EdgeInsets.all(8),
             children: snapshot.data!.docs.map((DocumentSnapshot document) {
               Map<String, dynamic> film =
                   document.data()! as Map<String, dynamic>;
@@ -44,15 +44,13 @@ class ListPage extends StatelessWidget {
               String link = film['link'] ?? 'Link indisponibil';
               String vizionat = film['vizionat'] ?? 'Status necunoscut';
               return Card(
-                // Use Card for each film entry
-                elevation: 5, // Shadow effect
+                elevation: 5,
                 margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
                 child: ListTile(
                   title: Text(titlu,
                       style: const TextStyle(fontWeight: FontWeight.bold)),
                   subtitle: Padding(
-                    padding: const EdgeInsets.only(
-                        top: 8.0), // Padding for better spacing
+                    padding: const EdgeInsets.only(top: 8.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
@@ -64,7 +62,7 @@ class ListPage extends StatelessWidget {
                     ),
                   ),
                   trailing: Wrap(
-                    spacing: 12, // Space between icons
+                    spacing: 12,
                     children: [
                       IconButton(
                         icon: Icon(film['likes']
