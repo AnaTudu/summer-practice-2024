@@ -23,6 +23,7 @@ class ListPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Filme Adăugate"),
+        backgroundColor: Colors.purple,
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance.collection('movies').snapshots(),
@@ -34,6 +35,7 @@ class ListPage extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           }
           return ListView(
+            padding: const EdgeInsets.all(8), // Add padding around the list
             children: snapshot.data!.docs.map((DocumentSnapshot document) {
               Map<String, dynamic> film =
                   document.data()! as Map<String, dynamic>;
@@ -41,38 +43,47 @@ class ListPage extends StatelessWidget {
               String descriere = film['mesaj'] ?? 'Descriere indisponibilă';
               String link = film['link'] ?? 'Link indisponibil';
               String vizionat = film['vizionat'] ?? 'Status necunoscut';
-              return ListTile(
-                title: Text(titlu),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text('Titlu: $titlu'),
-                    Text('Descreiere: $descriere'),
-                    const SizedBox(height: 4),
-                    Text('Link: $link'),
-                    Text('Vizionat: $vizionat'),
-                  ],
-                ),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    IconButton(
-                      icon: Icon(film['likes']
-                          ? Icons.thumb_up
-                          : Icons.thumb_up_alt_outlined),
-                      onPressed: () => _toggleLike(document.id, film['likes']),
-                      color: film['likes'] ? Colors.blue : null,
+              return Card(
+                // Use Card for each film entry
+                elevation: 5, // Shadow effect
+                margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+                child: ListTile(
+                  title: Text(titlu,
+                      style: const TextStyle(fontWeight: FontWeight.bold)),
+                  subtitle: Padding(
+                    padding: const EdgeInsets.only(
+                        top: 8.0), // Padding for better spacing
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text('Descriere: $descriere'),
+                        const SizedBox(height: 4),
+                        Text('Link: $link'),
+                        Text('Vizionat: $vizionat'),
+                      ],
                     ),
-                    IconButton(
-                      icon: Icon(
-                          film['interested'] ? Icons.star : Icons.star_border),
-                      onPressed: () =>
-                          _toggleInterested(document.id, film['interested']),
-                      color: film['interested']
-                          ? const Color.fromARGB(255, 134, 87, 192)
-                          : null,
-                    ),
-                  ],
+                  ),
+                  trailing: Wrap(
+                    spacing: 12, // Space between icons
+                    children: [
+                      IconButton(
+                        icon: Icon(film['likes']
+                            ? Icons.thumb_up
+                            : Icons.thumb_up_alt_outlined),
+                        onPressed: () =>
+                            _toggleLike(document.id, film['likes']),
+                        color: film['likes'] ? Colors.green : null,
+                      ),
+                      IconButton(
+                        icon: Icon(film['interested']
+                            ? Icons.star
+                            : Icons.star_border),
+                        onPressed: () =>
+                            _toggleInterested(document.id, film['interested']),
+                        color: film['interested'] ? Colors.amber : null,
+                      ),
+                    ],
+                  ),
                 ),
               );
             }).toList(),

@@ -1,6 +1,7 @@
 import 'package:filme/src/screen/addfilm.dart';
 import 'package:flutter/material.dart';
 import 'package:filme/src/screen/listpage.dart';
+//import 'package:filme/src/service/group_service.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -22,9 +23,49 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Filme si Seriale',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.purple,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+        brightness: Brightness.light,
+        primaryColor: Colors.purple[800],
+        primaryColorLight: Colors.purple[300],
+        primaryColorDark: Colors.purple[900],
+        hintColor: Colors.purpleAccent[700],
+        scaffoldBackgroundColor: Colors.white,
+        fontFamily: 'Georgia',
+        textTheme: const TextTheme(
+          displayLarge: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+          titleLarge: TextStyle(
+              fontSize: 36.0, fontStyle: FontStyle.italic, color: Colors.white),
+          bodyMedium: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
+        ),
+        buttonTheme: ButtonThemeData(
+          buttonColor: Colors.purple[400],
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+          textTheme: ButtonTextTheme.primary,
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(25.0),
+            borderSide: BorderSide(color: Colors.purple[700]!),
+          ),
+          filled: true,
+          fillColor: Colors.purple[50],
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            foregroundColor: Colors.white,
+            backgroundColor: Colors.purple[600],
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+          ),
+        ),
+        snackBarTheme: SnackBarThemeData(
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: Colors.purple[600],
+          contentTextStyle: const TextStyle(color: Colors.white),
+        ),
       ),
       home: const MyHomePage(),
     );
@@ -44,7 +85,7 @@ class MyHomePage extends StatelessWidget {
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage("assets/images/background.jpg"),
-            fit: BoxFit.cover, // This will fill the background of the screen
+            fit: BoxFit.cover,
           ),
         ),
         child: Center(
