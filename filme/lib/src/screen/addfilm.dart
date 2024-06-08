@@ -14,7 +14,6 @@ class _AddfilmState extends State<Addfilm> {
   final TextEditingController _mesajController = TextEditingController();
   final TextEditingController _linkController = TextEditingController();
   final TextEditingController _vizionatController = TextEditingController();
-  final List<Map<String, dynamic>> _filme = [];
 
   void _addfilme() async {
     final String title = _titleController.text;
@@ -41,18 +40,6 @@ class _AddfilmState extends State<Addfilm> {
     _mesajController.clear();
     _linkController.clear();
     _vizionatController.clear();
-  }
-
-  void _toggleLike(int index) {
-    setState(() {
-      _filme[index]['likes'] = !_filme[index]['likes'];
-    });
-  }
-
-  void _toggleInterested(int index) {
-    setState(() {
-      _filme[index]['interested'] = !_filme[index]['interested'];
-    });
   }
 
   @override
@@ -108,9 +95,7 @@ class _AddfilmState extends State<Addfilm> {
                                 Text('Descriere: ${data['mesaj']}'),
                                 Text('Link: ${data['link']}'),
                                 Text('Vizionat: ${data['vizionat']}'),
-                              ]))
-                          // Add the rest of your movie data here
-                          );
+                              ])));
                     }).toList(),
                   );
                 }),

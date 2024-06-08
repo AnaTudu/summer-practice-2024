@@ -42,7 +42,7 @@ class MyHomePage extends StatelessWidget {
       ),
       body: Center(
         child: Column(
-          mainAxisSize: MainAxisSize.min, // Centrarea butoanelor pe verticală
+          mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             ElevatedButton(
               onPressed: () {
@@ -53,7 +53,7 @@ class MyHomePage extends StatelessWidget {
               },
               child: const Text('Adaugă film nou'),
             ),
-            const SizedBox(height: 20), // Spațiu între butoane
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(

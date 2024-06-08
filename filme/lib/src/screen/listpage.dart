@@ -5,15 +5,17 @@ class ListPage extends StatelessWidget {
   const ListPage({super.key});
 
   void _toggleLike(String docId, bool likes) {
+    //print(docId);
+    print(likes);
     FirebaseFirestore.instance
-        .collection('filme')
+        .collection('movies')
         .doc(docId)
         .update({'likes': !likes});
   }
 
   void _toggleInterested(String docId, bool interested) {
     FirebaseFirestore.instance
-        .collection('filme')
+        .collection('movies')
         .doc(docId)
         .update({'interested': !interested});
   }
@@ -37,14 +39,10 @@ class ListPage extends StatelessWidget {
             children: snapshot.data!.docs.map((DocumentSnapshot document) {
               Map<String, dynamic> film =
                   document.data()! as Map<String, dynamic>;
-              String titlu = film['title'] ??
-                  'Titlu necunoscut'; // Valoare implicită pentru titlu
-              String descriere = film['mesaj'] ??
-                  'Descriere indisponibilă'; // Valoare implicită pentru descriere
-              String link = film['link'] ??
-                  'Link indisponibil'; // Valoare implicită pentru link
-              String vizionat = film['vizionat'] ??
-                  'Status necunoscut'; // Valoare implicită pentru vizionat
+              String titlu = film['title'] ?? 'Titlu necunoscut';
+              String descriere = film['mesaj'] ?? 'Descriere indisponibilă';
+              String link = film['link'] ?? 'Link indisponibil';
+              String vizionat = film['vizionat'] ?? 'Status necunoscut';
               return ListTile(
                 title: Text(titlu),
                 subtitle: Column(
