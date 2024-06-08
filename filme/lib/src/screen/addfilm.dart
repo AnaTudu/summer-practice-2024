@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Addfilm extends StatefulWidget {
   const Addfilm({super.key});
@@ -15,7 +16,7 @@ class _AddfilmState extends State<Addfilm> {
   final TextEditingController _vizionatController = TextEditingController();
   final List<Map<String, dynamic>> _filme = [];
 
-  void _addfilme() {
+  void _addfilme() async {
     final String title = _titleController.text;
     final String mesaj = _mesajController.text;
     final String link = _linkController.text;
@@ -23,21 +24,23 @@ class _AddfilmState extends State<Addfilm> {
     if (title.isEmpty || mesaj.isEmpty) {
       return;
     }
-    setState(() {
-      _filme.add({
-        'title': title,
-        'mesaj': mesaj,
-        'link': link,
-        'vizionat': vizionat,
-        'likes': false,
-        'interested': false,
-      });
 
-      _titleController.clear();
-      _mesajController.clear();
-      _linkController.clear();
-      _vizionatController.clear();
+    CollectionReference movies =
+        FirebaseFirestore.instance.collection('movies');
+
+    await movies.add({
+      'title': title,
+      'mesaj': mesaj,
+      'link': link,
+      'vizionat': vizionat,
+      'likes': false,
+      'interested': false,
     });
+
+    _titleController.clear();
+    _mesajController.clear();
+    _linkController.clear();
+    _vizionatController.clear();
   }
 
   void _toggleLike(int index) {
@@ -56,7 +59,7 @@ class _AddfilmState extends State<Addfilm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add filme'),
+        title: const Text('Adauga filme'),
       ),
       body: Column(
         children: <Widget>[
@@ -81,44 +84,36 @@ class _AddfilmState extends State<Addfilm> {
             child: const Text('Adauga film'),
           ),
           Expanded(
-            child: ListView.builder(
-              itemCount: _filme.length,
-              itemBuilder: (ctx, index) {
-                return Card(
-                  child: ListTile(
-                    title: Text(_filme[index]['title']),
-                    subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment
-                            .start, // Aliniază textul la stânga
-                        children: <Widget>[
-                          Text('Descriere ${_filme[index]['mesaj']}'),
-                          Text('Link ${_filme[index]['link']}'),
-                          Text('Vizionat ${_filme[index]['vizionat']}'),
-                        ]),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        IconButton(
-                          icon: Icon(_filme[index]['likes']
-                              ? Icons.thumb_up
-                              : Icons.thumb_up_alt_outlined),
-                          onPressed: () => _toggleLike(index),
-                          color: _filme[index]['likes'] ? Colors.purple : null,
-                        ),
-                        IconButton(
-                          icon: Icon(_filme[index]['interested']
-                              ? Icons.star
-                              : Icons.star_border),
-                          onPressed: () => _toggleInterested(index),
-                          color:
-                              _filme[index]['interested'] ? Colors.amber : null,
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
+            child: StreamBuilder(
+                stream:
+                    FirebaseFirestore.instance.collection('filme').snapshots(),
+                builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.hasError) {
+                    return const Text('Ops!! Ceva nu e OK!');
+                  }
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Text("Loading");
+                  }
+                  return ListView(
+                    children:
+                        snapshot.data!.docs.map((DocumentSnapshot document) {
+                      Map<String, dynamic> data =
+                          document.data()! as Map<String, dynamic>;
+                      return ListTile(
+                          title: Text('Titlu: ${data['titlu']}'),
+                          subtitle: SingleChildScrollView(
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                Text('Descriere: ${data['mesaj']}'),
+                                Text('Link: ${data['link']}'),
+                                Text('Vizionat: ${data['vizionat']}'),
+                              ]))
+                          // Add the rest of your movie data here
+                          );
+                    }).toList(),
+                  );
+                }),
           ),
         ],
       ),
